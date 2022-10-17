@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const getId = require('uuid').v4;
 const PORT = process.env.PORT || 3001;
 
 
@@ -31,13 +32,14 @@ function createNewNote(body, notesArray) {
   );
 
   return note;
-}
+};
 
-app.get('/api/db', (req, res) => {
+app.get('/api/notes', (req, res) => {
   res.json(notes);
 });
 
-app.post('/api/db', (req, res) => {
+app.post('/api/notes', (req, res) => {
+  req.body.id = notes.length.toString(); 
   // req.body is where our incoming content will be
   const note = createNewNote(req.body, notes);
   res.json(note);
