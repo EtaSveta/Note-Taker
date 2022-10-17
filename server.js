@@ -1,5 +1,6 @@
 const express = require('express');
-
+const fs = require('fs');
+const path = require('path');
 const PORT = process.env.PORT || 3001;
 
 
@@ -19,14 +20,27 @@ app.use(express.static('public'));
 // app.use('/api', apiRoutes);
 // app.use('/', htmlRoutes);
 
+function createNewNote(body, notesArray) {
+  const note = body;
+
+  notesArray.push(note);
+
+  fs.writeFileSync(
+    path.join(__dirname, './db/db.json'),
+    JSON.stringify({ notes: notesArray }, null, 2)
+  );
+
+  return note;
+}
+
 app.get('/api/db', (req, res) => {
   res.json(notes);
 });
 
 app.post('/api/db', (req, res) => {
   // req.body is where our incoming content will be
-  console.log(req.body);
-  res.json(req.body);
+  const note = createNewNote(req.body, notes)
+  res.json(note);
 });
 
 app.listen(PORT, () => {
