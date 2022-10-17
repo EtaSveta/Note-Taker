@@ -1,5 +1,4 @@
-{
-  "notes": [
+[
     {
       "title": "Test Title",
       "text": "Test text"
@@ -12,5 +11,4 @@
       "title": "Sveta Svetlana",
       "text": "Test text and another test"
     }
-  ]
-}
+]
