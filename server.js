@@ -1,7 +1,6 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const getId = require('uuid').v4;
 const PORT = process.env.PORT || 3001;
 
 
@@ -34,6 +33,22 @@ function createNewNote(body, notesArray) {
   return note;
 };
 
+function deleteNote(notesArray, id) {
+  let idOfNote = parseInt(id);
+  notesArray.splice(idOfNote, 1);
+
+  // This loop will assign new indexes for the remaining notes in array.
+  for (let i = idOfNote; i < notesArray.length; i++) {
+      notesArray[i].id = i.toString();
+  }
+
+  fs.writeFileSync(
+      path.join(__dirname, './db/db.json'),
+      JSON.stringify({ notes: notesArray }, null, 2)
+  )
+}
+
+
 app.get('/api/notes', (req, res) => {
   res.json(notes);
 });
@@ -43,6 +58,7 @@ app.post('/api/notes', (req, res) => {
   // req.body is where our incoming content will be
   const note = createNewNote(req.body, notes);
   res.json(note);
+  
 });
 
 app.get('/', (req,res) => {
@@ -51,8 +67,13 @@ app.get('/', (req,res) => {
 
 app.get('/notes', (req,res) => {
   res.sendFile(path.join(__dirname, './public/notes.html'))
+
 });
 
+app.delete('/api/notes/:id', (req, res) => {
+  deleteNote(notes, req.params.id);
+  res.json(notes);  
+})
 
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
