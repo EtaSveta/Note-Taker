@@ -1,15 +1,16 @@
 
   # Note Taker Application
 
-  
+  ![print](https://user-images.githubusercontent.com/109307665/197362736-bdcff812-484e-42c0-bfb6-357dc004f466.png)
+
 
   ## Table of Content
   - [Project Description](#description)
   - [Installation](#installation)
   - [Usage](#usage)
-  
-  - [Contributing](#contributing)
+ 
   - [Tests](#tests)
+  - [Deployed application link](#deployed_application_link)
   - [Questions](#questions)
 
   ## Description
@@ -21,13 +22,12 @@
   ## Usage
   Simply organize your tasks by creating, reading, updating or deleting notes in the application!
 
-  
-
-  ## Contributing
-  
-  
+    
   ## Tests
   No tests are required
+  
+  ## Deployed application link
+  https://warm-plains-61320.herokuapp.com
   
   ## Questions
   For additional questions you can contact me:
