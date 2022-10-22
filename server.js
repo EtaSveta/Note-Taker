@@ -1,79 +1,19 @@
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
 const PORT = process.env.PORT || 3001;
-
-
 const app = express();
 
-const { notes } = require('./db/db.json');
-
-// const apiRoutes = require('./routes/apiRoutes');
-// const htmlRoutes = require('./routes/htmlRoutes');
+const apiRoutes = require('./routes/apiRoutes');
+const htmlRoutes = require('./routes/htmlRoutes');
 //parse incoming string or array data
 app.use(express.urlencoded({ extended:true }));
 //parse incoming JSON data
 app.use(express.json());
 app.use(express.static('public'));
 
-// // Use apiRoutes
-// app.use('/api', apiRoutes);
-// app.use('/', htmlRoutes);
+// Use apiRoutes
+app.use('/api', apiRoutes);
+app.use('/', htmlRoutes);
 
-function createNewNote(body, notesArray) {
-  const note = body;
-
-  notesArray.push(note);
-
-  fs.writeFileSync(
-    path.join(__dirname, './db/db.json'),
-    JSON.stringify({ notes: notesArray }, null, 2)
-  );
-
-  return note;
-};
-
-function deleteNote(notesArray, id) {
-  let idOfNote = parseInt(id);
-  notesArray.splice(idOfNote, 1);
-
-  // This loop will assign new indexes for the remaining notes in array.
-  for (let i = idOfNote; i < notesArray.length; i++) {
-      notesArray[i].id = i.toString();
-  }
-
-  fs.writeFileSync(
-      path.join(__dirname, './db/db.json'),
-      JSON.stringify({ notes: notesArray }, null, 2)
-  )
-}
-
-
-app.get('/api/notes', (req, res) => {
-  res.json(notes);
-});
-
-app.post('/api/notes', (req, res) => {
-  req.body.id = notes.length.toString(); 
-  // req.body is where our incoming content will be
-  const note = createNewNote(req.body, notes);
-  res.json(note);
-  
-});
-
-app.get('/', (req,res) => {
-  res.sendFile(path.join(__dirname, './public/index.html'))
-});
-
-app.get('/notes', (req,res) => {
-  res.sendFile(path.join(__dirname, './public/notes.html'))
-
-});
-
-app.delete('/api/notes/:id', (req, res) => {
-  deleteNote(notes, req.params.id);
-  res.json(notes);  
-})
 
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
